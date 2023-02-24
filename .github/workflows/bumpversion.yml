@@ -4,18 +4,32 @@ run-name: Bump Version triggered by @${{ github.actor }}
 
 on:
   workflow_dispatch:
+    inputs:
+      updateType:
+        description: Type of the update [build|release|patch|minor|major]
+        required: true
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Bump version and push tag
-        uses: jaumann/github-bumpversion-action@v0.0.7
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: true
+          path: main
+
+      - name: Hello World
+        run: python -m venv .venv && source .venv/bin/activate
+        shell: sh
+
+      - name: Install bump version
+        run: pip install bump2version
+        shell: sh
+
+      - name: Install bump version
+        run: pip install bump2version
+        shell: sh
+
+      - name: Bump Version
+        run: ./scripts/bump-plugin ${{ input.updateType }}
