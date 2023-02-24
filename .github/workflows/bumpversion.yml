@@ -28,5 +28,4 @@ jobs:
         run: pip install bump2version
 
       - name: Bump Version
-        working-directory: scripts
-        run: ./bump-plugin ${{ inputs.updateType }}
+        run: ./scripts/bump-plugin ${{ inputs.updateType }}

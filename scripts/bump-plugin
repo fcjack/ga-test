@@ -18,22 +18,24 @@ set -eux -o pipefail
 
 bumpversion="python -m bumpversion"
 
-if $bumpversion > /dev/null != 2; then
-  echo "bump2version must be installed to bump versions; install using 'pip install bump2version'"
-  exit 1
-fi
+# if $bumpversion > /dev/null != 2; then
+#   echo "bump2version must be installed to bump versions; install using 'pip install bump2version'"
+#   exit 1
+# fi
 
-branch=$(git branch --show-current)
-if [ "$branch" != "main" ]; then
-    echo "Error: can only release a new version from main branch"
-    exit 1
-fi
+# branch=$(git branch --show-current)
+# if [ "$branch" != "main" ]; then
+#     echo "Error: can only release a new version from main branch"
+#     exit 1
+# fi
 
 part="$1"
 
+echo $part
+
 # cd plugin
-CURRENT_VERSION=$($bumpversion --dry-run --list $part | grep "^current_version" | sed -r s,"^.*=",,)
-NEW_VERSION=$($bumpversion --dry-run --list $part | grep -E "^new_version" | sed -r s,"^.*=",,)
+CURRENT_VERSION=$($bumpversion --dry-run --list $part --allow-dirty | grep "^current_version" | sed -r s,"^.*=",,)
+NEW_VERSION=$($bumpversion --dry-run --list $part --allow-dirty | grep -E "^new_version" | sed -r s,"^.*=",,)
 BRANCH="release/v$NEW_VERSION"
 git checkout -b "$BRANCH"
 $bumpversion $part
@@ -49,6 +51,6 @@ if command -v gh > /dev/null; then
 else
   echo "Create a new pull request at:"
   echo
-  echo "    https://github.com/grafana/incident/pull/new/$BRANCH"
+  echo "    https://github.com/fcjack/ga-test/pull/new/$BRANCH"
 fi
 echo
