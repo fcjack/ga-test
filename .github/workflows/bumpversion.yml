@@ -8,7 +8,13 @@ on:
       updateType:
         description: Type of the update [build|release|patch|minor|major]
         required: true
-        type: string
+        type: choice
+        options:
+          - build
+          - release
+          - patch
+          - minor
+          - major
 
 jobs:
   build:
@@ -19,9 +25,9 @@ jobs:
         with:
           path: main
 
-      - name: Hello World
-        run: python -m venv .venv && source .venv/bin/activate
-        shell: sh
+      # - name: Hello World
+      #   run: python -m venv .venv && source .venv/bin/activate
+      #   shell: sh
 
       - name: Install bump version
         run: pip install bump2version
