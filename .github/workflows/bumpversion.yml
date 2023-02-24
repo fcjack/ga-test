@@ -39,5 +39,7 @@ jobs:
 
       - name: Bump Version
         working-directory: scripts
-        run: ./bump-plugin ${{ inputs.updateType }}
         shell: sh
+        run: |
+          ls -la
+          ./bump-plugin ${{ inputs.updateType }}
