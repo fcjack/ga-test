@@ -37,7 +37,7 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          gh pr create --title "New release" --body "automatic generated" --base main -a @${{ github.actor }}
+          gh pr create --title "New release" --body "automatic generated" --base main -a @${{ github.actor }} --head
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # with:
