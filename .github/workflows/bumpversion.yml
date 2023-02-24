@@ -37,15 +37,7 @@ jobs:
 
       - name: Create Pull Request
         run: |
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/fcjack/ga-test/pulls \
-            -f title='Amazing new feature' \
-          -f body='Please pull these awesome changes in!' \
-          -f head='octocat:new-feature' \
-          -f base='main'
+          gh pr create --title "New release" --body "automatic generated" --base main -a @${{ github.actor }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # with:
