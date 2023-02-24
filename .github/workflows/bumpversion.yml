@@ -3,7 +3,7 @@ name: Bump Version and Prepare Release
 run-name: Bump Version triggered by @${{ github.actor }}
 
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   build:
