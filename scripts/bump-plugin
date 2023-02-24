@@ -36,4 +36,4 @@ CURRENT_VERSION=$($bumpversion --dry-run --list $part --allow-dirty | grep "^cur
 NEW_VERSION=$($bumpversion --dry-run --list $part --allow-dirty | grep -E "^new_version" | sed -r s,"^.*=",,)
 BRANCH="release/v$NEW_VERSION"
 git checkout -b "$BRANCH"
-# $bumpversion $part
+$bumpversion $part
