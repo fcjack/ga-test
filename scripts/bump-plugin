@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+# Create a new release branch, then use bump2version to increment the version number
+# in package.json for the first argument (major|minor|patch|release|build), and commit the changes.
+#
+# After running this script, the release branch should be pushed to GitHub and a pull request
+# should be created to merge to main. Once the PR is merged, main should be pulled locally
+# and the `release` script should be used to tag the new commit, triggering a release.
+#
+# This script must be run from the root of the repository, and requires that the 'bump2version'
+# Python package be installed. bump2version can be installed using pip:
+#
+#     pip install bump2version
+#
+# See https://github.com/c4urself/bump2version#using-bumpversion-in-a-script for some details.
+
+set -eux -o pipefail
+
+bumpversion="python -m bumpversion"
+
+if $bumpversion > /dev/null != 2; then
+  echo "bump2version must be installed to bump versions; install using 'pip install bump2version'"
+  exit 1
+fi
+
+branch=$(git branch --show-current)
+if [ "$branch" != "main" ]; then
+    echo "Error: can only release a new version from main branch"
+    exit 1
+fi
+
+part="$1"
+
+# cd plugin
+CURRENT_VERSION=$($bumpversion --dry-run --list $part | grep "^current_version" | sed -r s,"^.*=",,)
+NEW_VERSION=$($bumpversion --dry-run --list $part | grep -E "^new_version" | sed -r s,"^.*=",,)
+BRANCH="release/v$NEW_VERSION"
+git checkout -b "$BRANCH"
+$bumpversion $part
+
+set +x
+
+git push -u origin $BRANCH
+echo "Bumped version of plugin from $CURRENT_VERSION to $NEW_VERSION."
+echo
+if command -v gh > /dev/null; then
+  gh pr create --fill
+  echo "A pull request has been created. After merging, pull and run ./scripts/release-plugin to release."
+else
+  echo "Create a new pull request at:"
+  echo
+  echo "    https://github.com/grafana/incident/pull/new/$BRANCH"
+fi
+echo
