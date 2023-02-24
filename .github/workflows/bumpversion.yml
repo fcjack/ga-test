@@ -30,5 +30,5 @@ jobs:
         run: pip install bump2version
 
       - name: Bump Version
-        working-directory: ./scripts
+        working-directory: scripts
         run: ls -la
