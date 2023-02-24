@@ -32,4 +32,4 @@ jobs:
         shell: sh
 
       - name: Bump Version
-        run: ./scripts/bump-plugin ${{ input.updateType }}
+        run: ./scripts/bump-plugin ${{ inputs.updateType }}
