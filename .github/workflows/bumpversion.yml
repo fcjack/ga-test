@@ -31,7 +31,6 @@ jobs:
         run: ./scripts/bump-plugin ${{ inputs.updateType }}
 
       - name: Create Pull Request
-        uses: actions/github-script@v6
         run: |
           gh api \
             --method POST \
